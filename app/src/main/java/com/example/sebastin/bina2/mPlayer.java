@@ -22,7 +22,13 @@ public  class mPlayer {
             Play.setDataSource(filePath);
             Play.prepare();
             Play.start();
-
+            Play.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer Play) {
+                    playerState = playerState.STOPPED;
+                    Play.release();
+                }
+            });
             playerState = playerState.PLAYING;
         }
     }
@@ -34,17 +40,7 @@ public  class mPlayer {
             playerState = playerState.STOPPED;
         }
     }
-    public void onCompletions (){
-        if (playerState == playerState.PLAYING) {
-            Play.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer Play) {
-                    playerState = playerState.STOPPED;
-                    Play.release();
-                }
-            });
-        }
-    }
+
     public  playerState getState(){
         return playerState;
     }

@@ -32,7 +32,7 @@ public class RecordingsActivity extends AppCompatActivity {
     public String listviewitems[] = {"No hay Grabaciones"};
     public long totalspace = dir.getTotalSpace();
     public int listcontrol = 0;
-    public String filetoplay;
+    public String filetoplay = "file";
     TextView text;
     public mPlayer mP = new mPlayer();
     @Override
@@ -48,15 +48,18 @@ public class RecordingsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                text.setText(""+mP.getState());
-                mP.onCompletions();
-                //text.setText(""+listcontrol);
                 if (mP.getState().equals(mPlayer.playerState.STOPPED)){
                    listcontrol = 0;
+                }
+                if (!filetoplay.equals(dir.toString()+"/"+parent.getItemAtPosition(position).toString()) && (mP.getState().equals(mPlayer.playerState.PLAYING)))
+                {
+                    //cambio de grabacion si playing
+                    reproduccion();
                 }
                 filetoplay = dir.toString()+"/"+parent.getItemAtPosition(position).toString();
                 reproduccion();
                 Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "is selected", Toast.LENGTH_SHORT).show();
+               // text.setText(filetoplay);
             }
         });
     }
@@ -68,11 +71,11 @@ public class RecordingsActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            listcontrol =1;
+            listcontrol = 1;
         }
         else if (listcontrol == 1){
             mP.stopPlayback();
-            listcontrol =0;
+            listcontrol = 0;
         }
 
     }
